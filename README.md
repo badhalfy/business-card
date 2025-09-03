@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Igor Khalfin - Digital Business Card</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            background: #0a0a0a;
+            position: relative;
+            overflow-x: hidden;
+            color: var(--text-primary);
+        }
+
+        /* Animated background */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            background: linear-gradient(45deg, #0a0a0a, #1a1a2e);
+        }
+
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb1 {
+            width: 600px;
+            height: 600px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            top: -200px;
+            left: -200px;
+            animation-delay: 0s;
+        }
+
+        .orb2 {
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            bottom: -150px;
+            right: -150px;
+            animation-delay: 5s;
+        }
+
+        .orb3 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(50px, -50px) rotate(90deg); }
+            50% { transform: translate(-30px, 30px) rotate(180deg); }
+            75% { transform: translate(-50px, -30px) rotate(270deg); }
+        }
+
+        /* Language toggle */
+        .language-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            padding: 4px;
+            z-index: 1000;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .lang-option {
+            padding: 8px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .lang-option.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Main container */
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 60px 20px 40px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Profile card */
+        .profile-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 40px 30px;
+            width: 100%;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .avatar-container {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            position: relative;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: bold;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .avatar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shine 3s ease-in-out infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .name {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 5s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(30deg); }
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        /* Contact links */
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .contact-item {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .contact-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .contact-item:hover::before {
+            left: 100%;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+            border-color: rgba(102, 126, 234, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .contact-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .contact-text {
+            flex: 1;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .contact-arrow {
+            opacity: 0.5;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover .contact-arrow {
+            opacity: 1;
+            transform: translateX(5px);
+        }
+
+        /* VCard creation */
+        #vcard-temp {
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: 40px 15px 30px;
+            }
+            
+            .profile-card {
+                padding: 30px 20px;
+            }
+            
+            .name {
+                font-size: 28px;
+            }
+            
+            .language-toggle {
+                top: 15px;
+                right: 15px;
+            }
+        }
+
+        /* Loading animation */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <div class="gradient-orb orb1"></div>
+        <div class="gradient-orb orb2"></div>
+        <div class="gradient-orb orb3"></div>
+    </div>
+
+    <div class="language-toggle">
+        <div class="lang-option active" onclick="setLanguage('en')">EN</div>
+        <div class="lang-option" onclick="setLanguage('ru')">RU</div>
+    </div>
+
+    <div class="container">
+        <div class="profile-card">
+            <div class="header">
+                <div class="avatar-container">
+                    <div class="avatar">IK</div>
+                </div>
+                <h1 class="name">Igor Khalfin</h1>
+                <p class="subtitle" data-en="Digital Business Card" data-ru="Цифровая визитка">Digital Business Card</p>
+            </div>
+
+            <div class="contact-links">
+                <a href="mailto:Khalfin.igor95@gmail.com" class="contact-item">
+                    <div class="contact-icon">📧</div>
+                    <span class="contact-text" data-en="Email" data-ru="Электронная почта">Email</span>
+                    <span class="contact-arrow">→</span>
+                </a>
+
+                <a href="tel:+17187758415" class="contact-item">
+                    <div class="contact-icon">📱</div>
+                    <span class="contact-text" data-en="Call Me" data-ru="Позвонить">Call Me</span>
+                    <span class="contact-arrow">→</span>
+                </a>
+
+                <div class="contact-item" onclick="downloadVCard()">
+                    <div class="contact-icon">💾</div>
+                    <span class="contact-text" data-en="Save Contact" data-ru="Сохранить контакт">Save Contact</span>
+                    <span class="contact-arrow">→</span>
+                </div>
+
+                <a href="https://instagram.com/igor__miami" target="_blank" class="contact-item">
+                    <div class="contact-icon">📸</div>
+                    <span class="contact-text" data-en="Instagram" data-ru="Инстаграм">Instagram</span>
+                    <span class="contact-arrow">→</span>
+                </a>
+
+                <a href="https://wa.me/13053311480" target="_blank" class="contact-item">
+                    <div class="contact-icon">🚗</div>
+                    <span class="contact-text" data-en="Rent a Car (WhatsApp)" data-ru="Аренда авто (WhatsApp)">Rent a Car (WhatsApp)</span>
+                    <span class="contact-arrow">→</span>
+                </a>
+
+                <a href="https://t.me/badhalfy" target="_blank" class="contact-item">
+                    <div class="contact-icon">💬</div>
+                    <span class="contact-text" data-en="Telegram" data-ru="Телеграм">Telegram</span>
+                    <span class="contact-arrow">→</span>
+                </a>
+
+                <a href="https://miami-auto-rent.com" target="_blank" class="contact-item">
+                    <div class="contact-icon">🌐</div>
+                    <span class="contact-text" data-en="Car Rental Website" data-ru="Сайт аренды авто">Car Rental Website</span>
+                    <span class="contact-arrow">→</span>
+                </a>
+
+                <a href="https://airbnb.com" target="_blank" class="contact-item">
+                    <div class="contact-icon">🏠</div>
+                    <span class="contact-text" data-en="Airbnb Profile" data-ru="Профиль Airbnb">Airbnb Profile</span>
+                    <span class="contact-arrow">→</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <a id="vcard-temp" download="igor_khalfin.vcf"></a>
+
+    <script>
+        // Language switching functionality
+        function setLanguage(lang) {
+            // Update toggle buttons
+            document.querySelectorAll('.lang-option').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Update text content
+            document.querySelectorAll('[data-en]').forEach(element => {
+                element.textContent = element.getAttribute(`data-${lang}`);
+            });
+
+            // Add fade-in effect
+            document.querySelector('.profile-card').classList.add('fade-in');
+            setTimeout(() => {
+                document.querySelector('.profile-card').classList.remove('fade-in');
+            }, 500);
+        }
+
+        // VCard generation
+        function downloadVCard() {
+            const vCardData = `BEGIN:VCARD
+VERSION:3.0
+FN:Igor Khalfin
+N:Khalfin;Igor;;;
+TEL;TYPE=CELL:+1-718-775-8415
+EMAIL:Khalfin.igor95@gmail.com
+URL:https://miami-auto-rent.com
+NOTE:Car rental services in Miami. Contact via WhatsApp, Telegram, or Instagram.
+END:VCARD`;
+
+            const blob = new Blob([vCardData], { type: 'text/vcard' });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.getElementById('vcard-temp');
+            link.href = url;
+            link.click();
+            window.URL.revokeObjectURL(url);
+
+            // Visual feedback
+            event.target.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                event.target.style.transform = '';
+            }, 200);
+        }
+
+        // Parallax effect on mouse move
+        document.addEventListener('mousemove', (e) => {
+            const orbs = document.querySelectorAll('.gradient-orb');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+
+            orbs.forEach((orb, index) => {
+                const speed = (index + 1) * 20;
+                const xPos = (x - 0.5) * speed;
+                const yPos = (y - 0.5) * speed;
+                orb.style.transform = `translate(${xPos}px, ${yPos}px)`;
+            });
+        });
+
+        // Add touch feedback for mobile
+        document.querySelectorAll('.contact-item').forEach(item => {
+            item.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.98)';
+            });
+            item.addEventListener('touchend', function() {
+                this.style.transform = '';
+            });
+        });
+
+        // Initialize page with animations
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
+        });
+    </script>
+</body>
+</html>
